@@ -6,7 +6,7 @@
 @description Class for searching and interfacing with ElasticSearch
 '''
 
-from connection import ElasticConnection
+from .connection import ElasticConnection
 
 
 class ElasticSearch(object):
@@ -105,7 +105,7 @@ class ElasticSearch(object):
         if self.params:
             query_header.update(self.params)
         if self.verbose:
-            print query_header
+            print(query_header)
         response = request.post(url,query_header)
         return response
 
@@ -137,7 +137,7 @@ class ElasticSearch(object):
         else:
             query_header = dict(query=query)
         if self.verbose:
-            print query_header
+            print(query_header)
         response = request.post(url,query_header)
 
         return response
@@ -149,7 +149,7 @@ class ElasticSearch(object):
         request = self.session
         url = 'http://%s:%s/%s/%s/' % (self.host, self.port, index, itype)
         if self.verbose:
-            print value
+            print(value)
         response = request.post(url,value)
         return response
 
@@ -180,7 +180,7 @@ class ElasticSearch(object):
         else:
             content = dict(query=query)
         if self.verbose:
-            print content
+            print(content)
         response = request.post(url,content)
         return response
 
@@ -195,7 +195,7 @@ class ElasticSearch(object):
         request = self.session
         content = {'settings' : dict(number_of_shards=number_of_shards, number_of_replicas=number_of_replicas)}
         if self.verbose:
-            print content
+            print(content)
         url = 'http://%s:%s/%s' % (self.host, self.port, index)
         response = request.put(url,content)
         return response
@@ -274,7 +274,7 @@ class ElasticSearch(object):
         if script:
             content['couchdb']['script'] = script
         if self.verbose:
-            print content
+            print(content)
         url = 'http://%s:%s/_river/%s/_meta' %(self.host, self.port, river_name or index_name)
         response = request.post(url,content)
         return response
@@ -320,7 +320,7 @@ class ElasticSearch(object):
         url = 'http://%s:%s/%s/%s/_mapping' % (self.host, self.port, index_name, index_type)
         content = { index_type : { 'properties' : map_value } }
         if self.verbose:
-            print content
+            print(content)
         response = request.put(url,content)
         return response
 
@@ -354,7 +354,7 @@ class ElasticSearch(object):
         request = self.session
         url = 'http://%s:%s/%s' % (self.host, self.port, module)
         if self.verbose:
-            print data
+            print(data)
         if method=='GET':
             response = request.get(url)
         elif method=='POST':
