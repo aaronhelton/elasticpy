@@ -28,7 +28,7 @@ class ElasticConnection(object):
         self.timeout = timeout
         self.encoding = None
         self.headers = {'Content-Type': 'Application/json; charset=utf-8'}
-        if params.has_key('encoding'):
+        if 'encoding' in params:
             self.encoding = 'utf8'
             del params['encoding']
         if _use_gevent:
@@ -37,7 +37,7 @@ class ElasticConnection(object):
                 ElasticConnection.session = requests.Session(**params)
                 ElasticConnection.session_lock.release()
         else:
-            self.session = requests.Session(timeout=timeout, **params)
+            self.session = requests.Session(**params)
 
     def get(self, url):
         try:
@@ -54,7 +54,7 @@ class ElasticConnection(object):
             response = self.session.post(url, data=body, headers=self.headers, timeout=self.timeout)
         except requests.ConnectionError as e:
             self.status_code = 0
-            return {'error': e.message}
+            return {'error': e}
         self.status_code = response.status_code
         return json.loads(response.content, encoding=self.encoding)
 
